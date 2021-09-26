@@ -9,13 +9,13 @@ router.get('/', (req, res) => {
         include: [
             {
                 model: User,
-                attributes: ['username']
+                attributes: { exclude: ['password'] }
             },
             {
                 model: Comment,
                 include: {
                     model: User,
-                    attributes: ['username']
+                    attributes: { exclude: ['password'] }
                 }
             }
         ]
@@ -44,12 +44,13 @@ router.get('/post/:id', (req, res) => {
       include: [
         {
           model: User,
-          attributes: ['username']
+          attributes: { exclude: ['password'] }
         },
         {
             model: Comment,
             include: {
                 model: User,
+                attributes: { exclude: ['password'] }
             }
         }
       ]
