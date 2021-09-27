@@ -2,7 +2,7 @@ const path = require("path");
 const express = require("express");
 const session = require("express-session");
 const exphbs = require("express-handlebars");
-const routes = require("./controllers");
+const router = require("./controllers");
 const helpers = require("./utils/helpers");
 
 const sequelize = require("./config/connection");
@@ -15,7 +15,8 @@ async function init() {
   app.use(
     session({
       secret: process.env.SESSION_SECRET,
-      cookie: {},
+      cookie: { 
+        maxAge: 1000 * 60 * 60 * 24},
       resave: false,
       saveUninitialized: true,
       store: new SequelizeStore({
@@ -34,11 +35,16 @@ async function init() {
   app.use(express.urlencoded({ extended: true }));
   app.use(express.static(path.join(__dirname, "public")));
 
-  app.use(routes);
+  app.use(router);
 
-  sequelize.sync({ force: false }).then(() => {
-    app.listen(PORT, () => console.log("Now listening"));
-  });
+  try {
+    await sequelize.sync({ force: false });
+    app.listen(PORT, async () => {
+        console.log(`Server listening on port ${PORT}`);
+    });
+} catch (err) {
+    console.error(err);
+}
 }
 
 init();

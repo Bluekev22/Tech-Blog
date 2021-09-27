@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/Bluekev22/Tech-Blog#readme",
   "devDependencies": {
-    "nodemon": "^2.0.12"
+    "nodemon": "^2.0.13"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
